@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .game {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .choice {
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 5px 15px;
+            margin: 10px;
+            user-select: none;
+            color: white;
+        }
+        
+        .choice:nth-child(1) {
+            background-color: red;
+        }
+        
+        .choice:nth-child(2) {
+            background-color: blue;
+        }
+        
+        .choice:nth-child(3) {
+            background-color: green;
+        }
+        
+        .score {
+            display: flex;
+            justify-content: center;
+        }
+        
+        #userScore {
+            border: 2px solid black;
+            padding: 10px;
+            margin: 20px;
+        }
+        
+        #compScore {
+            border: 2px solid black;
+            padding: 10px;
+            margin: 20px;
+        }
+        
+        #msg {
+            display: flex;
+            justify-content: center;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game">
+        <div class="choice" id="rock">
+            <h1>Rock</h1>
+        </div>
+        <div class="choice" id="paper">
+            <h1>Paper</h1>
+        </div>
+        <div class="choice" id="scissor">
+            <h1> Scissor</h1>
+        </div>
+    </div>
+    <div class="score">
+        <div id="userScore">
+            <p>0</p>
+            <p>You</p>
+        </div>
+        <div id="compScore">
+            <p>0</p>
+            <p>Computer</p>
+        </div>
+    </div>
+    <div id="msg">
+        You won !
+    </div>
+
+
+    <script>
+        let userScore = 0
+        let comScore = 0
+        let user = document.querySelector("#userScore")
+        let comp = document.querySelector("#compScore")
+        let msg = document.querySelector("#msg")
+        let choices = document.querySelectorAll(".choice")
+
+        const Generate = () => {
+            let options = ["rock", "paper", "scissor"]
+            let random = Math.floor(Math.random() * options.length)
+            compChoice = options[random]
+                // console.log(compChoice)
+            return compChoice
+
+        }
+        const drowgame = () => {
+            console.log("Drow")
+            msg.innerText = "Drow game ! please try again later..."
+            msg.style.backgroundColor = "yellow"
+        }
+
+        const playGame = (userChoice) => {
+            console.log("user", userChoice)
+                // generate computer choice
+
+            // rock ,paper , scissors
+
+            let compChoice = Generate()
+            console.log("comp", compChoice)
+            if (userChoice === compChoice) {
+                drowgame()
+
+            } else {
+                let userWin = true
+                if (userChoice === "rock") {
+                    userWin = compChoice === "paper" ? false : true
+
+                }
+                if (userChoice === "paper") {
+                    userWin = compChoice === "rock" ? true : false
+
+                }
+                if (userChoice === "scissor") {
+                    userWin = compChoice === "rock" ? false : true
+                }
+                showWinner(userWin, userChoice, compChoice)
+            }
+        }
+
+        const showWinner = (userWin, comChoice, userChoice) => {
+            if (userWin == true) {
+                msg.innerHTML = `you Won ! your ${userChoice} beats ${comChoice}`
+                msg.style.backgroundColor = "green"
+                userScore += 1
+                user.children[0].innerText = userScore
+
+            } else {
+                msg.innerHTML = `you lost  ${userChoice} beats your ${comChoice}`
+                msg.style.backgroundColor = "red"
+                comp.children[0].innerText = comScore
+                comScore += 1
+
+            }
+        }
+
+        choices.forEach((choice) => {
+            // console.log(choice)
+            choice.addEventListener("click", () => {
+                let userChoice = choice.getAttribute("id")
+                playGame(userChoice)
+            })
+        })
+    </script>
+</body>
+
+</html>
